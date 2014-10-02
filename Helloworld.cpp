@@ -6,7 +6,7 @@ int main(){
 
 string s;
 cout << "Hellew. vad heter due?"
-cin >> s;
+cin >> s; //sparar namn
 
 
 return 0;
