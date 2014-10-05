@@ -1,4 +1,4 @@
 Komaprojekt
 ===========
 
-TNM040 - Hitta dina vänner. Undvik resten.
+TNM040 - Hitta dina vänner. Undvik resten. Allah Akbar
