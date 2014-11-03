@@ -22,5 +22,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp"
         android:text="@string/button1" />
+    +    
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/face_description"
+        android:src="@drawable/crazyface" />
 
 </RelativeLayout>
