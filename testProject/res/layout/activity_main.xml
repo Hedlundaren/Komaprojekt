@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -8,16 +8,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.testproject.MainActivity" >
 
-    <FrameLayout
+    <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:contentDescription="@string/background_description"
+        android:scaleType="center"
+        android:src="@drawable/background1" />
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center" 
-            android:scaleType="center"
-            android:src="@drawable/background1" />
-    </FrameLayout>
-
-</RelativeLayout>
+</FrameLayout>
