@@ -13,6 +13,6 @@
         android:layout_gravity="center"
         android:contentDescription="@string/background_description"
         android:scaleType="matrix"
-        android:src="@drawable/smallmap" />
+        android:src="@drawable/background1" />
 
 </RelativeLayout>

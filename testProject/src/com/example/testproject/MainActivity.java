@@ -23,9 +23,6 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        //findViewById(R.id.background1).setOnDragListener(new MyDragListener());
-        //img.setOnTouchListener(new View.OnDragListener() {}
-        
         mRrootLayout = (ViewGroup) findViewById(R.id.root);
 		mImageView = (ImageView) mRrootLayout.findViewById(R.id.background1);
 		
@@ -36,8 +33,8 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
     }
     
     public boolean onTouch(View view, MotionEvent event) {
-		final int X = (int) event.getRawX();
-		final int Y = (int) event.getRawY();
+		final int X = (int) event.getRawX();	//they don't have to be final
+		final int Y = (int) event.getRawY();	//"made them final just for avoid reassign these variables"
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
 		case MotionEvent.ACTION_DOWN:
 			RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
@@ -51,8 +48,7 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
 		case MotionEvent.ACTION_POINTER_UP:
 			break;
 		case MotionEvent.ACTION_MOVE:
-			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
-					.getLayoutParams();
+			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
 			layoutParams.leftMargin = X - _xDelta;
 			layoutParams.topMargin = Y - _yDelta;
 			layoutParams.rightMargin = -250;
