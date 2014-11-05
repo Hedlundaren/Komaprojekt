@@ -1,17 +1,32 @@
 package com.example.testproject;
 
 import android.support.v7.app.ActionBarActivity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.view.View.OnClickListener;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        Button one = (Button)this.findViewById(R.id.button2);
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.wilhelmscream);
+        one.setOnClickListener(new OnClickListener(){
+
+        	@Override
+            public void onClick(View v) {
+                mp.start();
+            }
+
+        }); 
     }
 
 
