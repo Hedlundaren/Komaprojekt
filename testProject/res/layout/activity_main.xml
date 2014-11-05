@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="@string/background_description"
-        android:scaleType="center"
-        android:src="@drawable/background1" />
+        android:scaleType="matrix"
+        android:src="@drawable/smallmap" />
 
 </RelativeLayout>

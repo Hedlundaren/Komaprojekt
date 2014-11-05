@@ -29,8 +29,8 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         mRrootLayout = (ViewGroup) findViewById(R.id.root);
 		mImageView = (ImageView) mRrootLayout.findViewById(R.id.background1);
 		
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
-		mImageView.setLayoutParams(layoutParams);
+		//RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
+		//mImageView.setLayoutParams(layoutParams);
 		mImageView.setOnTouchListener(this);
         
     }
