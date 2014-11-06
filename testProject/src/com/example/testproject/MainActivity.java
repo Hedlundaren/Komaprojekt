@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
         }
         
         googleMap.getUiSettings().setZoomControlsEnabled(false); // true to enable zoom buttons
-     // latitude and longitude
+        // latitude and longitude
         double latitude = 0;
         double longitude = 0;
          
