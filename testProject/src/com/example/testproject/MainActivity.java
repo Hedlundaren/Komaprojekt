@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends Activity {
  
@@ -42,6 +44,17 @@ public class MainActivity extends Activity {
                         .show();
             }
         }
+        
+        googleMap.getUiSettings().setZoomControlsEnabled(false); // true to enable zoom buttons
+     // latitude and longitude
+        double latitude = 0;
+        double longitude = 0;
+         
+        // create marker
+        MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Hello Maps ");
+         
+        // adding marker
+        googleMap.addMarker(marker);
     }
  
     @Override
