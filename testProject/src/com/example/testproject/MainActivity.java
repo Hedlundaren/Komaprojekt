@@ -1,36 +1,53 @@
 package com.example.testproject;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 
 public class MainActivity extends Activity {
-   static final LatLng TutorialsPoint = new LatLng(21 , 57);
-   private GoogleMap googleMap;
-   @Override
-   protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_main);
-      try { 
+ 
+    // Google Map
+    private GoogleMap googleMap;
+ 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+ 
+        try {
+            // Loading map
+            initilizeMap();
+ 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+ 
+    }
+ 
+    /**
+     * function to load map. If map is not created it will create it for you
+     * */
+    private void initilizeMap() {
+        if (googleMap == null) {
+            googleMap = ((MapFragment) getFragmentManager().findFragmentById(
+                    R.id.map)).getMap();
+ 
+            // check if map is created successfully or not
             if (googleMap == null) {
-               googleMap = ((MapFragment) getFragmentManager().
-               findFragmentById(R.id.map)).getMap();
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! unable to create maps", Toast.LENGTH_SHORT)
+                        .show();
             }
-         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-         Marker TP = googleMap.addMarker(new MarkerOptions().
-         position(TutorialsPoint).title("TutorialsPoint"));
-
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-
-   }
-
+        }
+    }
+ 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initilizeMap();
+    }
+ 
 }
