@@ -1,5 +1,7 @@
 package com.example.testproject;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+
 
 
 public class MainActivity extends ActionBarActivity implements OnTouchListener{
@@ -43,6 +46,8 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         setContentView(R.layout.activity_main);
         ImageView view = (ImageView) findViewById(R.id.background1);
         view.setOnTouchListener(this);
+        
+        Bitmap test = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
     }
 
     @Override
