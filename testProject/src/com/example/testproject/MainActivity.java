@@ -1,5 +1,6 @@
 package com.example.testproject;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -14,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 
@@ -22,6 +24,9 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
 	private static final String TAG = "Touch";
     @SuppressWarnings("unused")
     private static final float MIN_ZOOM = 1f,MAX_ZOOM = 1f;
+    
+    //control bool
+    private boolean isOnClick;
 
     // These matrices will be used to scale points of the image
     Matrix matrix = new Matrix();
@@ -60,16 +65,29 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         dumpEvent(event);
         // Handle touch events here...
 
+        //control toast
+        Context context = getApplicationContext();
+        CharSequence text = "Plupp!";
+        int duration = Toast.LENGTH_SHORT;
+        Toast controlToast = Toast.makeText(context, text, duration);
+        
+
+        
+        
         switch (event.getAction() & MotionEvent.ACTION_MASK) 
         {
             case MotionEvent.ACTION_DOWN:   // first finger down only
                                                 savedMatrix.set(matrix);
                                                 start.set(event.getX(), event.getY());
+                                                isOnClick = true;
                                                 Log.d(TAG, "mode=DRAG"); // write to LogCat
                                                 mode = DRAG;
                                                 break;
 
             case MotionEvent.ACTION_UP: // first finger lifted
+            								if(isOnClick){
+            									controlToast.show();
+            								}
 
             case MotionEvent.ACTION_POINTER_UP: // second finger lifted
 
@@ -90,14 +108,12 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                 break;
 
             case MotionEvent.ACTION_MOVE:
-
-                                                if (mode == DRAG) 
-                                                { 
+                                                if (mode == DRAG) { 
+                                                	
                                                     matrix.set(savedMatrix);
                                                     matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
                                                 } 
-                                                else if (mode == ZOOM) 
-                                                { 
+                                                else if (mode == ZOOM) { 
                                                     // pinch zooming
                                                     float newDist = spacing(event);
                                                     Log.d(TAG, "newDist=" + newDist);
@@ -111,7 +127,10 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                         matrix.postScale(scale, scale, mid.x, mid.y);
                                                     }
                                                 }
+                                                isOnClick = false;
                                                 break;
+                                                
+
         }
 
         view.setImageMatrix(matrix); // display the transformation on screen
