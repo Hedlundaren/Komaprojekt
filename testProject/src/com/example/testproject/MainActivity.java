@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.FloatMath;
 import android.util.Log;
@@ -56,7 +55,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         ImageView view = (ImageView) findViewById(R.id.background1);
         view.setOnTouchListener(this);
         
-        Bitmap test = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        //Bitmap test = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
     }
 
     @Override
@@ -75,32 +74,33 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         int duration = Toast.LENGTH_SHORT;
         Toast controlToast = Toast.makeText(context, text, duration);
         
-
-        
-        
         switch (event.getAction() & MotionEvent.ACTION_MASK) 
         {
-            case MotionEvent.ACTION_DOWN:   // first finger down only
-                                                savedMatrix.set(matrix);
+        	//first finger down only
+            case MotionEvent.ACTION_DOWN:  
+            									savedMatrix.set(matrix);
                                                 start.set(event.getX(), event.getY());
                                                 isOnClick = true;
                                                 Log.d(TAG, "mode=DRAG"); // write to LogCat
                                                 mode = DRAG;
                                                 break;
-
-            case MotionEvent.ACTION_UP: // first finger lifted
-            								if(isOnClick){
-            									controlToast.show();
-            								}
-
-            case MotionEvent.ACTION_POINTER_UP: // second finger lifted
-
+                                                
+            //first finger lifted
+            case MotionEvent.ACTION_UP: 		
+            									if(isOnClick){
+            										//Control message to show activation
+            										//THIS IS WHERE WE NEED TO ADD OUR MARKER
+            										controlToast.show();
+            									}
+            									
+            //second finger lifted
+            case MotionEvent.ACTION_POINTER_UP: 
                                                 mode = NONE;
                                                 Log.d(TAG, "mode=NONE");
                                                 break;
-
-            case MotionEvent.ACTION_POINTER_DOWN: // first and second finger down
-
+                                                
+            //first and second finger down
+            case MotionEvent.ACTION_POINTER_DOWN: 
                                                 oldDist = spacing(event);
                                                 Log.d(TAG, "oldDist=" + oldDist);
                                                 if (oldDist > 5f) {
@@ -111,29 +111,34 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                 }
                                                 break;
 
-            case MotionEvent.ACTION_MOVE:
-            								if (isOnClick && (Math.abs(start.x - event.getX()) > SCROLL_THRESHOLD || Math.abs(start.y - event.getY()) > SCROLL_THRESHOLD)) {
-            	
-            									if (mode == DRAG) { 
-                                                    matrix.set(savedMatrix);
-                                                    matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
-                                                } 
-                                                else if (mode == ZOOM) { 
-                                                    // pinch zooming
-                                                    float newDist = spacing(event);
-                                                    Log.d(TAG, "newDist=" + newDist);
-                                                    if (newDist > 5f) 
-                                                    {
-                                                        matrix.set(savedMatrix);
-                                                        scale = newDist / oldDist; // setting the scaling of the
-                                                                                    // matrix...if scale > 1 means
-                                                                                    // zoom in...if scale < 1 means
-                                                                                    // zoom out
-                                                        matrix.postScale(scale, scale, mid.x, mid.y);
-                                                    }
-                                                }
-                                                isOnClick = false;
-            								}
+            //movement (change between ACTION_DOWN and ACTION_UP
+            case MotionEvent.ACTION_MOVE:		
+	            							   /*This first if-statement checks if the movement that is mostly inevitably caused upon touch
+	            								*exceeds a defined threshold. If it does, then the movement is large enough that the app
+	            								*shouldn't register a click, and sets the bool to false. If it doesn't exceed the threshold
+	            								*then a click should register, but the small movement is still in effect because the rest of
+	            								*the case is executed.*/
+	            								if (isOnClick && (Math.abs(start.x - event.getX()) > SCROLL_THRESHOLD || Math.abs(start.y - event.getY()) > SCROLL_THRESHOLD))
+	            									isOnClick = false;
+	            								
+	            								//Calculate and apply movement
+	            								if (mode == DRAG) { 
+	                                                matrix.set(savedMatrix);
+	                                                matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
+	                                            } 
+	                                            else if (mode == ZOOM) {  // pinch zooming
+	                                                float newDist = spacing(event);
+	                                                Log.d(TAG, "newDist=" + newDist);
+	                                                if (newDist > 5f) 
+	                                                {
+	                                                    matrix.set(savedMatrix);
+	                                                    scale = newDist / oldDist; // setting the scaling of the
+	                                                                                // matrix...if scale > 1 means
+	                                                                                // zoom in...if scale < 1 means
+	                                                                                // zoom out
+	                                                    matrix.postScale(scale, scale, mid.x, mid.y);
+	                                                }
+	                                            }
                                                 break;
                                                 
 
