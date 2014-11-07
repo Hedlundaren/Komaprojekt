@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.FloatMath;
 import android.util.Log;
@@ -27,6 +28,9 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
     
     //control bool
     private boolean isOnClick;
+    
+    //scroll threshold - least amount of movement required
+    private final float SCROLL_THRESHOLD = 10;
 
     // These matrices will be used to scale points of the image
     Matrix matrix = new Matrix();
@@ -108,8 +112,9 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                 break;
 
             case MotionEvent.ACTION_MOVE:
-                                                if (mode == DRAG) { 
-                                                	
+            								if (isOnClick && (Math.abs(start.x - event.getX()) > SCROLL_THRESHOLD || Math.abs(start.y - event.getY()) > SCROLL_THRESHOLD)) {
+            	
+            									if (mode == DRAG) { 
                                                     matrix.set(savedMatrix);
                                                     matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
                                                 } 
@@ -128,6 +133,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                     }
                                                 }
                                                 isOnClick = false;
+            								}
                                                 break;
                                                 
 
