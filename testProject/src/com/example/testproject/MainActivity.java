@@ -25,17 +25,17 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
     @SuppressWarnings("unused")
     private static final float MIN_ZOOM = 1f,MAX_ZOOM = 1f;
     
-    //control bool
+    //control bool -- used to determine if click should register instead of movement or zoom
     private boolean isOnClick;
     
-    //scroll threshold - least amount of movement required
+    //scroll threshold -- max amount of movement allowed to be considered a click
     private final float SCROLL_THRESHOLD = 10;
 
     // These matrices will be used to scale points of the image
     Matrix matrix = new Matrix();
     Matrix savedMatrix = new Matrix();
 
-    // The 3 states (events) which the user is trying to perform
+    // The 3 states (events) the user is trying to perform, excluding click (could be implemented)
     static final int NONE = 0;
     static final int DRAG = 1;
     static final int ZOOM = 2;
@@ -48,13 +48,13 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) 
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ImageView view = (ImageView) findViewById(R.id.background1);
         view.setOnTouchListener(this);
         
+        //future marker?
         //Bitmap test = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
     }
 
@@ -66,14 +66,14 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         float scale;
 
         dumpEvent(event);
-        // Handle touch events here...
 
-        //control toast
+        //control toast -- display when click registers
         Context context = getApplicationContext();
         CharSequence text = "Plupp!";
         int duration = Toast.LENGTH_SHORT;
         Toast controlToast = Toast.makeText(context, text, duration);
         
+        /**Handling of touch events**/
         switch (event.getAction() & MotionEvent.ACTION_MASK) 
         {
         	//first finger down only
@@ -86,6 +86,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                 break;
                                                 
             //first finger lifted
+            //note that movement happens in between
             case MotionEvent.ACTION_UP: 		
             									if(isOnClick){
             										//Control message to show activation
@@ -111,10 +112,10 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                 }
                                                 break;
 
-            //movement (change between ACTION_DOWN and ACTION_UP
+            //movement (change between ACTION_DOWN and ACTION_UP)
             case MotionEvent.ACTION_MOVE:		
 	            							   /*This first if-statement checks if the movement that is mostly inevitably caused upon touch
-	            								*exceeds a defined threshold. If it does, then the movement is large enough that the app
+	            								*exceeds a defined threshold. If it does, then the movement is large enough that the program
 	            								*shouldn't register a click, and sets the bool to false. If it doesn't exceed the threshold
 	            								*then a click should register, but the small movement is still in effect because the rest of
 	            								*the case is executed.*/
@@ -122,15 +123,14 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
 	            									isOnClick = false;
 	            								
 	            								//Calculate and apply movement
-	            								if (mode == DRAG) { 
+	            								if (mode == DRAG) { 		//case: drag
 	                                                matrix.set(savedMatrix);
 	                                                matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
 	                                            } 
-	                                            else if (mode == ZOOM) {  // pinch zooming
+	                                            else if (mode == ZOOM) {  	//case: pinch zooming
 	                                                float newDist = spacing(event);
 	                                                Log.d(TAG, "newDist=" + newDist);
-	                                                if (newDist > 5f) 
-	                                                {
+	                                                if (newDist > 5f) {
 	                                                    matrix.set(savedMatrix);
 	                                                    scale = newDist / oldDist; // setting the scaling of the
 	                                                                                // matrix...if scale > 1 means
@@ -156,8 +156,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
      * ----------------------------------------------------
      */
 
-    private float spacing(MotionEvent event) 
-    {
+    private float spacing(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);
         float y = event.getY(0) - event.getY(1);
         return FloatMath.sqrt(x * x + y * y);
@@ -170,31 +169,27 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
      * ------------------------------------------------------------
      */
 
-    private void midPoint(PointF point, MotionEvent event) 
-    {
+    private void midPoint(PointF point, MotionEvent event){
         float x = event.getX(0) + event.getX(1);
         float y = event.getY(0) + event.getY(1);
         point.set(x / 2, y / 2);
     }
 
     /** Show an event in the LogCat view, for debugging */
-    private void dumpEvent(MotionEvent event) 
-    {
+    private void dumpEvent(MotionEvent event) {
         String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE","POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
         StringBuilder sb = new StringBuilder();
         int action = event.getAction();
         int actionCode = action & MotionEvent.ACTION_MASK;
         sb.append("event ACTION_").append(names[actionCode]);
 
-        if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP) 
-        {
+        if (actionCode == MotionEvent.ACTION_POINTER_DOWN || actionCode == MotionEvent.ACTION_POINTER_UP) {
             sb.append("(pid ").append(action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
             sb.append(")");
         }
 
         sb.append("[");
-        for (int i = 0; i < event.getPointerCount(); i++) 
-        {
+        for (int i = 0; i < event.getPointerCount(); i++) {
             sb.append("#").append(i);
             sb.append("(pid ").append(event.getPointerId(i));
             sb.append(")=").append((int) event.getX(i));
