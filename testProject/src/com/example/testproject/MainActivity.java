@@ -16,7 +16,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -77,12 +80,16 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         Bitmap alteredBitmap = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
         Canvas canvas = new Canvas(alteredBitmap);
         Paint paint = new Paint();*/
-    	ImageView plupp = (ImageView) findViewById(R.id.test);
     	
         ImageView view = (ImageView) v;
         view.setScaleType(ImageView.ScaleType.MATRIX);
         float scale;
 
+        ImageView plupp = (ImageView) findViewById(R.id.test);
+        //LinearLayout plupp = (LinearLayout) findViewById(R.id.test);
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)plupp.getLayoutParams();
+        //LinearLayout.LayoutParams lp = (android.widget.LinearLayout.LayoutParams) plupp;
+        
         dumpEvent(event);
 
         //control toast -- display when click registers
@@ -92,8 +99,8 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         Toast controlToast = Toast.makeText(context, text, duration);
         
         /**Handling of touch events**/
-        switch (event.getAction() & MotionEvent.ACTION_MASK) 
-        {
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+        
         	//first finger down only
             case MotionEvent.ACTION_DOWN:  
             									savedMatrix.set(matrix);
@@ -109,6 +116,9 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             									if(isOnClick){
             										//Control message to show activation
             										//draw(canvas, event.getX(), event.getY());
+            										lp.leftMargin = (int)event.getX();
+            									    lp.topMargin = (int)event.getY();
+            									    plupp.setLayoutParams(lp);
             										plupp.setVisibility(View.VISIBLE);
             										controlToast.show();
             									}
