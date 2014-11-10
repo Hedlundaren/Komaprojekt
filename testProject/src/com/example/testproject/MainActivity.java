@@ -2,9 +2,11 @@ package com.example.testproject;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+//import android.graphics.Bitmap;
+//import android.graphics.BitmapFactory;
+//import android.graphics.Canvas;
 import android.graphics.Matrix;
+//import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.FloatMath;
@@ -21,6 +23,11 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements OnTouchListener{
 
+	/*
+	Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);
+	Canvas canvas = new Canvas(bmp);
+	*/
+	
 	private static final String TAG = "Touch";
     @SuppressWarnings("unused")
     private static final float MIN_ZOOM = 1f,MAX_ZOOM = 1f;
@@ -55,13 +62,23 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         ImageView view = (ImageView) findViewById(R.id.background1);
         view.setOnTouchListener(this);
         
-        //future marker?
-        //Bitmap test = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
     }
+    
+    /*
+    protected void draw(Canvas canvas, float f, float g) {
+    	canvas.drawBitmap(bmp, f, g, null);
+    }*/
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) 
-    {
+    public boolean onTouch(View v, MotionEvent event) {
+    	
+    	/*future marker?
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        Bitmap alteredBitmap = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+        Canvas canvas = new Canvas(alteredBitmap);
+        Paint paint = new Paint();*/
+    	ImageView plupp = (ImageView) findViewById(R.id.test);
+    	
         ImageView view = (ImageView) v;
         view.setScaleType(ImageView.ScaleType.MATRIX);
         float scale;
@@ -91,7 +108,8 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             case MotionEvent.ACTION_UP: 		
             									if(isOnClick){
             										//Control message to show activation
-            										//THIS IS WHERE WE NEED TO ADD OUR MARKER
+            										//draw(canvas, event.getX(), event.getY());
+            										plupp.setVisibility(View.VISIBLE);
             										controlToast.show();
             									}
             									
@@ -146,6 +164,11 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         }
 
         view.setImageMatrix(matrix); // display the transformation on screen
+        
+        /*
+        view.buildDrawingCache();
+        Bitmap bmp2 = view.getDrawingCache();
+        */
 
         return true; // indicate event was handled
     }
@@ -201,6 +224,8 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
 
         sb.append("]");
         Log.d("Touch Events ---------", sb.toString());
+        
+
     }
     
     

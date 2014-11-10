@@ -15,4 +15,14 @@
         android:scaleType="matrix"
         android:src="@drawable/tp5" />
 
+    <ImageView
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/background_description"
+        android:scaleType="matrix"
+        android:src="@drawable/ic_launcher"
+        android:visibility="invisible" />
+
 </RelativeLayout>
