@@ -2,10 +2,7 @@
 <resources>
 
     <string name="app_name">testProject</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="button1">Pointless Button</string>
-    <string name="button2">Arghh</string>
-    <string name="face_description">this is face</string>
+    <string name="background_description">Map missing</string>
 
 </resources>
