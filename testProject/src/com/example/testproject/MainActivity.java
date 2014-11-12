@@ -112,6 +112,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             										
             										//if yes, save coordinates relative to background view
             										//how? getTop(), getRight()?
+            										Log.d("MapLog", "Hejhej");
             									}
             									
             //second finger lifted
