@@ -1,7 +1,7 @@
 package com.example.testproject;
 
 import android.support.v7.app.ActionBarActivity;
-import android.content.Context;
+//import android.content.Context;
 //import android.graphics.Bitmap;
 //import android.graphics.BitmapFactory;
 //import android.graphics.Canvas;
@@ -11,6 +11,7 @@ import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.FloatMath;
 import android.util.Log;
+//import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -18,18 +19,13 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+//import android.widget.LinearLayout;
+//import android.widget.RelativeLayout;
+//import android.widget.Toast;
 
 
 
 public class MainActivity extends ActionBarActivity implements OnTouchListener{
-
-	/*
-	Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);
-	Canvas canvas = new Canvas(bmp);
-	*/
 	
 	private static final String TAG = "Touch";
     @SuppressWarnings("unused")
@@ -42,8 +38,10 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
     private final float SCROLL_THRESHOLD = 10;
 
     // These matrices will be used to scale points of the image
-    Matrix matrix = new Matrix();
-    Matrix savedMatrix = new Matrix();
+    Matrix matrix1 = new Matrix();
+    Matrix matrix2 = new Matrix();
+    Matrix savedMatrix1 = new Matrix();
+    Matrix savedMatrix2 = new Matrix();
 
     // The 3 states (events) the user is trying to perform, excluding click (could be implemented)
     static final int NONE = 0;
@@ -66,44 +64,34 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         view.setOnTouchListener(this);
         
     }
-    
-    /*
-    protected void draw(Canvas canvas, float f, float g) {
-    	canvas.drawBitmap(bmp, f, g, null);
-    }*/
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
     	
-    	/*future marker?
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-        Bitmap alteredBitmap = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
-        Canvas canvas = new Canvas(alteredBitmap);
-        Paint paint = new Paint();*/
-    	
         ImageView view = (ImageView) v;
-        view.setScaleType(ImageView.ScaleType.MATRIX);
         float scale;
 
-        ImageView plupp = (ImageView) findViewById(R.id.test);
-        //LinearLayout plupp = (LinearLayout) findViewById(R.id.test);
+        ImageView plupp = (ImageView) findViewById(R.id.plupp);
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)plupp.getLayoutParams();
-        //LinearLayout.LayoutParams lp = (android.widget.LinearLayout.LayoutParams) plupp;
+        
+        view.setScaleType(ImageView.ScaleType.MATRIX);
+        plupp.setScaleType(ImageView.ScaleType.MATRIX);
         
         dumpEvent(event);
 
         //control toast -- display when click registers
-        Context context = getApplicationContext();
-        CharSequence text = "Plupp!";
-        int duration = Toast.LENGTH_SHORT;
-        Toast controlToast = Toast.makeText(context, text, duration);
+        //Context context = getApplicationContext();
+        //CharSequence text = "Plupp!";
+        //int duration = Toast.LENGTH_SHORT;
+        //Toast controlToast = Toast.makeText(context, text, duration);
         
         /**Handling of touch events**/
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
         
         	//first finger down only
             case MotionEvent.ACTION_DOWN:  
-            									savedMatrix.set(matrix);
+            									savedMatrix1.set(matrix1);
+            									savedMatrix2.set(matrix2);
                                                 start.set(event.getX(), event.getY());
                                                 isOnClick = true;
                                                 Log.d(TAG, "mode=DRAG"); // write to LogCat
@@ -115,12 +103,15 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             case MotionEvent.ACTION_UP: 		
             									if(isOnClick){
             										//Control message to show activation
-            										//draw(canvas, event.getX(), event.getY());
             										lp.leftMargin = (int)event.getX();
             									    lp.topMargin = (int)event.getY();
             									    plupp.setLayoutParams(lp);
             										plupp.setVisibility(View.VISIBLE);
-            										controlToast.show();
+            										
+            										//dialog box asking for confirmation of position (y/n)
+            										
+            										//if yes, save coordinates relative to background view
+            										//how? getTop(), getRight()?
             									}
             									
             //second finger lifted
@@ -134,7 +125,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                 oldDist = spacing(event);
                                                 Log.d(TAG, "oldDist=" + oldDist);
                                                 if (oldDist > 5f) {
-                                                    savedMatrix.set(matrix);
+                                                    savedMatrix1.set(matrix1);
                                                     midPoint(mid, event);
                                                     mode = ZOOM;
                                                     Log.d(TAG, "mode=ZOOM");
@@ -153,19 +144,19 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
 	            								
 	            								//Calculate and apply movement
 	            								if (mode == DRAG) { 		//case: drag
-	                                                matrix.set(savedMatrix);
-	                                                matrix.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
-	                                            } 
+	                                                matrix1.set(savedMatrix1);
+	                                                matrix1.postTranslate(event.getX() - start.x, event.getY() - start.y); // create the transformation in the matrix  of points
+	            								} 
 	                                            else if (mode == ZOOM) {  	//case: pinch zooming
 	                                                float newDist = spacing(event);
 	                                                Log.d(TAG, "newDist=" + newDist);
 	                                                if (newDist > 5f) {
-	                                                    matrix.set(savedMatrix);
+	                                                    matrix1.set(savedMatrix1);
 	                                                    scale = newDist / oldDist; // setting the scaling of the
 	                                                                                // matrix...if scale > 1 means
 	                                                                                // zoom in...if scale < 1 means
 	                                                                                // zoom out
-	                                                    matrix.postScale(scale, scale, mid.x, mid.y);
+	                                                    matrix1.postScale(scale, scale, mid.x, mid.y);
 	                                                }
 	                                            }
                                                 break;
@@ -173,12 +164,9 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
 
         }
 
-        view.setImageMatrix(matrix); // display the transformation on screen
-        
-        /*
-        view.buildDrawingCache();
-        Bitmap bmp2 = view.getDrawingCache();
-        */
+        view.setImageMatrix(matrix1);
+        /** sätta förändring applicerad på view på plupp?**/
+
 
         return true; // indicate event was handled
     }
