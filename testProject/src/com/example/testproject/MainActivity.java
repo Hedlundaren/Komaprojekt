@@ -22,6 +22,7 @@ import android.widget.ImageView;
 //import android.widget.LinearLayout;
 //import android.widget.RelativeLayout;
 //import android.widget.Toast;
+import com.example.testproject.ConfirmCoordinates;
 
 
 
@@ -113,6 +114,8 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             										//if yes, save coordinates relative to background view
             										//how? getTop(), getRight()?
             										Log.d("MapLog", "Hejhej");
+            										ConfirmCoordinates dialog = new ConfirmCoordinates();
+            										dialog.show(getSupportFragmentManager(), "test");
             									}
             									
             //second finger lifted
