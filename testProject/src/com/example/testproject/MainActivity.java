@@ -114,8 +114,28 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             										//if yes, save coordinates relative to background view
             										//how? getTop(), getRight()?
             										Log.d("MapLog", "Hejhej");
-            										ConfirmCoordinates dialog = new ConfirmCoordinates();
+            										ConfirmCoordinates dialog = new ConfirmCoordinates();	//flytta utanför sen
             										dialog.show(getSupportFragmentManager(), "test");
+            										
+            										/*
+            										if(!dialog.getIsSend()){
+            											plupp.setVisibility(View.INVISIBLE);
+            											Log.d("MapLog", "AVBRYTER");
+            										}
+            										
+            										else{	//isSend true
+            											Log.d("MapLog", "Skickar...");
+            										}*/
+            										
+            										
+            										if(dialog.getMode() == 1){			//SEND
+            											Log.d("MapLog", "Skickar...");
+            										}
+            										
+            										else if(dialog.getMode() == 2){		//CANCEL
+            											plupp.setVisibility(View.INVISIBLE);
+            											Log.d("MapLog", "AVBRYTER");
+            										}
             									}
             									
             //second finger lifted

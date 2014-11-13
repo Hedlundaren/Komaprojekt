@@ -10,11 +10,11 @@ import android.util.Log;
 
 public class ConfirmCoordinates extends DialogFragment {
     
-	Context mContext;
-
-	public ConfirmCoordinates() {
-	    mContext = getActivity();
-	}
+	static final int NONE = 0;
+    static final int SEND = 1;
+    static final int CANCEL = 2;
+	private boolean isSend = true;
+	private int MODE = NONE;
 	
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -24,20 +24,35 @@ public class ConfirmCoordinates extends DialogFragment {
         builder.setMessage(R.string.share_message).setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // FIRE ZE MISSILES!
+                	   setIsSend(true);
+                	   setMode(SEND);
                    }
                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // User cancelled the dialog
+                	   setIsSend(false);
+                	   setMode(CANCEL);
                    }
                });
         // Create the AlertDialog object and return it
         //Log.d("MapLog", "returnas då");
         return builder.create();
     }
-	/*
-	public void showDialog(){
-		ConfirmCoordinates dialog = new ConfirmCoordinates();
-		dialog.show(getSupportFragmentManager(),  "NoticeDialogFragment");
-		
-	} */
+
+	public boolean getIsSend() {
+		return isSend;
+	}
+
+	public void setIsSend(boolean isSend) {
+		this.isSend = isSend;
+	}
+	
+	public void setMode(int MODE){
+		this.MODE = MODE;
+	}
+	
+	public int getMode(){
+		return MODE;
+	}
+
 }
