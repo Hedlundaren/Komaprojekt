@@ -80,6 +80,9 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
         
         dumpEvent(event);
 
+        //dialog box popping up on marker set
+        ConfirmCoordinates dialog = new ConfirmCoordinates();	
+        
         //control toast -- display when click registers
         //Context context = getApplicationContext();
         //CharSequence text = "Plupp!";
@@ -114,7 +117,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             										//if yes, save coordinates relative to background view
             										//how? getTop(), getRight()?
             										Log.d("MapLog", "Hejhej");
-            										ConfirmCoordinates dialog = new ConfirmCoordinates();	//flytta utanför sen
+            										
             										dialog.show(getSupportFragmentManager(), "test");
             										
             										/*
@@ -128,6 +131,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             										}*/
             										
             										
+            										/*
             										if(dialog.getMode() == 1){			//SEND
             											Log.d("MapLog", "Skickar...");
             										}
@@ -135,7 +139,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
             										else if(dialog.getMode() == 2){		//CANCEL
             											plupp.setVisibility(View.INVISIBLE);
             											Log.d("MapLog", "AVBRYTER");
-            										}
+            										}*/
             									}
             									
             //second finger lifted
@@ -187,13 +191,16 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener{
                                                 
 
         }
-
+        
         view.setImageMatrix(matrix1);
         /** sätta förändring applicerad på view på plupp?**/
 
 
         return true; // indicate event was handled
+        
     }
+    
+    
 
     /*
      * --------------------------------------------------------------------------

@@ -4,9 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
+
 
 public class ConfirmCoordinates extends DialogFragment {
     
@@ -16,6 +17,11 @@ public class ConfirmCoordinates extends DialogFragment {
 	private boolean isSend = true;
 	private int MODE = NONE;
 	
+	Context mContext;
+
+	public ConfirmCoordinates() {
+	    mContext = getActivity();
+	}
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -23,19 +29,21 @@ public class ConfirmCoordinates extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.share_message).setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       // FIRE ZE MISSILES!
+                       // Send button
                 	   setIsSend(true);
                 	   setMode(SEND);
                    }
                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       // User cancelled the dialog
+                       // Cancel button
                 	   setIsSend(false);
                 	   setMode(CANCEL);
+                	   //Intent negativeActivity = new Intent(mContext,com.example.testproject.MainActivity.class);
+                       //startActivity(negativeActivity);
+                	   //mContext.startActivity(negativeActivity);
                    }
                });
         // Create the AlertDialog object and return it
-        //Log.d("MapLog", "returnas då");
         return builder.create();
     }
 
